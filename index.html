@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>박경안 | Backend Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0a0f; --bg2: #111118; --bg3: #1a1a24;
+  --accent: #00ff88; --accent2: #7b61ff;
+  --text: #e8e8f0; --muted: #6b6b80; --border: rgba(255,255,255,0.07);
+  --mono: 'Space Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --body: 'Noto Sans KR', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--body); line-height: 1.7; overflow-x: hidden; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.2rem 4rem;
+  background: rgba(10,10,15,0.9); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: var(--mono); font-size: 1rem; color: var(--accent); text-decoration: none; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+
+/* HERO */
+#hero {
+  min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+  padding: 8rem 4rem 4rem; position: relative; overflow: hidden;
+}
+.grid-bg {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridMove 20s linear infinite;
+}
+@keyframes gridMove { from { background-position: 0 0; } to { background-position: 60px 60px; } }
+.hero-tag { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+.hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero-name { font-family: var(--display); font-size: clamp(3.5rem, 9vw, 8rem); font-weight: 800; line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 0.5rem; }
+.hero-name span { color: var(--accent); }
+.hero-identity {
+  font-size: clamp(1rem, 2.5vw, 1.4rem); color: var(--muted);
+  margin-bottom: 2rem; font-weight: 300; max-width: 600px; line-height: 1.6;
+}
+.hero-identity strong { color: var(--text); font-weight: 500; }
+.hero-stack { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.stack-pill { font-family: var(--mono); font-size: 0.7rem; padding: 0.3rem 0.8rem; border: 1px solid var(--border); color: var(--muted); letter-spacing: 0.05em; }
+.stack-pill.main { border-color: rgba(0,255,136,0.4); color: var(--accent); }
+.hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-primary { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.1em; padding: 0.85rem 2rem; background: var(--accent); color: #0a0a0f; border: none; text-decoration: none; font-weight: 700; text-transform: uppercase; transition: all 0.2s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
+.btn-primary:hover { background: #00ddaa; transform: translateY(-2px); }
+.btn-outline { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.1em; padding: 0.85rem 2rem; background: transparent; color: var(--text); border: 1px solid var(--border); text-decoration: none; text-transform: uppercase; transition: all 0.2s; }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+/* SECTIONS */
+section { padding: 6rem 4rem; }
+.section-label { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.section-label::before { content: '// '; color: var(--muted); }
+.section-title { font-family: var(--display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.1; margin-bottom: 0.75rem; }
+.section-sub { color: var(--muted); font-size: 0.95rem; max-width: 500px; margin-bottom: 3.5rem; }
+
+/* ABOUT */
+#about { background: var(--bg2); }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.about-text { font-size: 0.95rem; color: #9999aa; line-height: 2; }
+.about-text p + p { margin-top: 1rem; }
+.about-text strong { color: var(--text); font-weight: 500; }
+.about-info { display: flex; flex-direction: column; gap: 0; }
+.info-row { display: flex; align-items: flex-start; gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
+.info-label { font-family: var(--mono); font-size: 0.65rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; min-width: 80px; padding-top: 2px; }
+.info-value { color: var(--text); }
+
+/* SKILLS */
+.skills-wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.skill-group { background: var(--bg2); border: 1px solid var(--border); padding: 1.5rem; }
+.skill-group-title { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+.skill-item { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; font-size: 0.875rem; color: var(--text); }
+.skill-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.dot-main { background: var(--accent); }
+.dot-mid { background: var(--accent2); }
+.dot-exp { background: var(--muted); }
+.skill-note { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); margin-left: auto; }
+.skill-legend { display: flex; gap: 1.5rem; margin-top: 1.5rem; }
+.legend-item { display: flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; }
+
+/* PROJECTS */
+#projects { background: var(--bg2); }
+.project-card {
+  border: 1px solid var(--border); margin-bottom: 2rem;
+  background: var(--bg); transition: border-color 0.3s; position: relative; overflow: hidden;
+}
+.project-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 0; background: var(--accent); transition: height 0.4s; }
+.project-card:hover { border-color: rgba(0,255,136,0.2); }
+.project-card:hover::before { height: 100%; }
+.project-top { padding: 2rem 2rem 1.5rem; display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start; }
+.project-num { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.2em; margin-bottom: 0.5rem; }
+.project-title { font-family: var(--display); font-size: 1.6rem; font-weight: 700; margin-bottom: 0.25rem; }
+.project-subtitle { font-size: 0.875rem; color: var(--muted); }
+.project-meta { text-align: right; }
+.project-team { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.project-stack { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: flex-end; }
+.tag { font-family: var(--mono); font-size: 0.62rem; padding: 0.2rem 0.55rem; border: 1px solid var(--border); color: var(--muted); }
+.tag.highlight { border-color: rgba(0,255,136,0.3); color: var(--accent); }
+.project-body { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-top: 1px solid var(--border); }
+.proj-section { padding: 1.5rem 2rem; border-right: 1px solid var(--border); }
+.proj-section:last-child { border-right: none; }
+.proj-section-title { font-family: var(--mono); font-size: 0.65rem; color: var(--accent2); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+.proj-section-title::before { content: ''; width: 12px; height: 1px; background: var(--accent2); }
+.proj-section p { font-size: 0.85rem; color: #9999aa; line-height: 1.8; }
+.proj-section ul { list-style: none; }
+.proj-section ul li { font-size: 0.85rem; color: #9999aa; line-height: 1.8; padding-left: 1rem; position: relative; }
+.proj-section ul li::before { content: '—'; position: absolute; left: 0; color: var(--muted); }
+.proj-role { font-size: 0.85rem; color: var(--text); font-weight: 500; }
+.project-footer { padding: 1rem 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.project-link { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-decoration: none; letter-spacing: 0.1em; display: flex; align-items: center; gap: 0.4rem; }
+.project-link::after { content: '→'; }
+.project-link:hover { color: #00ddaa; }
+
+/* TROUBLESHOOTING */
+.trouble-wrap { display: flex; flex-direction: column; gap: 1.5rem; }
+.trouble-card { background: var(--bg2); border: 1px solid var(--border); padding: 2rem; position: relative; overflow: hidden; }
+.trouble-card::after { content: 'RESOLVED'; position: absolute; top: 1.25rem; right: 1.5rem; font-family: var(--mono); font-size: 0.6rem; color: var(--accent); letter-spacing: 0.15em; border: 1px solid rgba(0,255,136,0.3); padding: 0.2rem 0.5rem; }
+.trouble-project { font-family: var(--mono); font-size: 0.65rem; color: var(--accent2); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.trouble-problem { font-size: 1rem; font-weight: 500; color: var(--text); margin-bottom: 1.25rem; }
+.trouble-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.trouble-section-title { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.trouble-section-title.cause { color: #ff6b6b; }
+.trouble-section-title.fix { color: var(--accent); }
+.trouble-section p { font-size: 0.85rem; color: #9999aa; line-height: 1.8; }
+.trouble-result { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 0.75rem; color: var(--accent); }
+
+/* CONTACT */
+#contact { background: var(--bg2); }
+.contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+.contact-desc { font-size: 1rem; color: #9999aa; line-height: 2; margin-bottom: 2rem; }
+.contact-links { display: flex; flex-direction: column; }
+.contact-link { display: flex; align-items: center; gap: 1rem; font-family: var(--mono); font-size: 0.8rem; color: var(--muted); text-decoration: none; padding: 0.9rem 0; border-bottom: 1px solid var(--border); transition: all 0.2s; }
+.contact-link:hover { color: var(--accent); padding-left: 0.5rem; border-color: var(--accent); }
+.contact-link-label { font-size: 0.6rem; letter-spacing: 0.2em; color: var(--accent); min-width: 60px; }
+.contact-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-group label { display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.form-group input, .form-group textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); font-family: var(--body); font-size: 0.875rem; padding: 0.75rem 1rem; outline: none; transition: border-color 0.2s; resize: vertical; }
+.form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+
+/* FOOTER */
+footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center; }
+.footer-copy { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(24px); transition: all 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.cursor { display: inline-block; width: 3px; height: 0.9em; background: var(--accent); vertical-align: middle; margin-left: 4px; animation: blink 0.9s step-end infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  section { padding: 4rem 1.5rem; }
+  #hero { padding: 7rem 1.5rem 4rem; }
+  .about-grid, .contact-wrap { grid-template-columns: 1fr; gap: 2.5rem; }
+  .skills-wrap { grid-template-columns: 1fr; }
+  .project-body { grid-template-columns: 1fr; }
+  .proj-section { border-right: none; border-bottom: 1px solid var(--border); }
+  .proj-section:last-child { border-bottom: none; }
+  .project-top { grid-template-columns: 1fr; }
+  .trouble-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">박경안.dev</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#trouble">Growth</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="grid-bg"></div>
+  <div class="hero-tag">Backend Developer · Available 2025</div>
+  <h1 class="hero-name">박<span>경안</span><span class="cursor"></span></h1>
+  <p class="hero-identity">
+    <strong>Java와 Python을 넘나들며</strong><br>
+    AI 서비스를 백엔드로 연결하는 개발자
+  </p>
+  <div class="hero-stack">
+    <span class="stack-pill main">Spring Boot</span>
+    <span class="stack-pill main">FastAPI</span>
+    <span class="stack-pill main">Java</span>
+    <span class="stack-pill main">Python</span>
+    <span class="stack-pill">MySQL</span>
+    <span class="stack-pill">MongoDB</span>
+    <span class="stack-pill">React</span>
+    <span class="stack-pill">Docker</span>
+    <span class="stack-pill">JWT</span>
+  </div>
+  <div class="hero-cta">
+    <a href="#projects" class="btn-primary">프로젝트 보기</a>
+    <a href="https://github.com/lense1" class="btn-outline">GitHub</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <div class="section-label">About me</div>
+    <h2 class="section-title">개발로 문제를 해결합니다</h2>
+  </div>
+  <div class="about-grid">
+    <div class="reveal about-text">
+      <p>
+        안녕하세요, 백엔드 개발자 <strong>박경안</strong>입니다.
+      </p>
+      <p>
+        <strong>Java(Spring Boot)</strong>와 <strong>Python(FastAPI)</strong> 두 생태계를 모두 다루며,
+        AI 모델 서버와 비즈니스 로직을 연결하는 백엔드 API 설계를 주력으로 합니다.
+      </p>
+      <p>
+        악성코드 탐지 플랫폼(VX)에서는 5인 팀의 Spring Boot 백엔드를 담당하며
+        AI 파이프라인과의 연동 구조를 설계했고, 식품 이커머스(Stock+er)에서는
+        7인 팀에서 FastAPI 백엔드와 Toss Payments 결제 시스템을 구현했습니다.
+      </p>
+      <p>
+        코드가 실제 서비스로 이어지는 순간에 보람을 느끼며,
+        팀원들과 함께 문제를 해결하는 과정을 즐깁니다.
+      </p>
+    </div>
+    <div class="reveal about-info">
+      <div class="info-row">
+        <span class="info-label">Name</span>
+        <span class="info-value">박경안</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Role</span>
+        <span class="info-value">Backend Developer</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Stack</span>
+        <span class="info-value">Spring Boot · FastAPI · React</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">GitHub</span>
+        <span class="info-value"><a href="https://github.com/lense1" style="color:var(--accent);text-decoration:none;">github.com/lense1</a></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Email</span>
+        <span class="info-value">star_ruddks@naver.com</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="reveal">
+    <div class="section-label">Skills</div>
+    <h2 class="section-title">기술 스택</h2>
+    <p class="section-sub">실무 수준으로 사용 가능한 기술과 경험한 기술을 구분했습니다.</p>
+  </div>
+  <div class="reveal skills-wrap">
+    <div class="skill-group">
+      <div class="skill-group-title">Backend</div>
+      <div class="skill-item"><span class="skill-dot dot-main"></span>Spring Boot<span class="skill-note">주력</span></div>
+      <div class="skill-item"><span class="skill-dot dot-main"></span>FastAPI<span class="skill-note">주력</span></div>
+      <div class="skill-item"><span class="skill-dot dot-main"></span>Java 11/17<span class="skill-note">주력</span></div>
+      <div class="skill-item"><span class="skill-dot dot-main"></span>Python 3.11<span class="skill-note">주력</span></div>
+      <div class="skill-item"><span class="skill-dot dot-mid"></span>Spring Security</div>
+      <div class="skill-item"><span class="skill-dot dot-mid"></span>MyBatis</div>
+      <div class="skill-item"><span class="skill-dot dot-mid"></span>SQLAlchemy</div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Database · Infra</div>
+      <div class="skill-item"><span class="skill-dot dot-main"></span>MySQL<span class="skill-note">주력</span></div>
+      <div class="skill-item"><span class="skill-dot dot-mid"></span>MongoDB</div>
+      <div class="skill-item"><span class="skill-dot dot-mid"></span>JWT 인증</div>
+      <div class="skill-item"><span class="skill-dot dot-mid"></span>Docker</div>
+      <div class="skill-item"><span class="skill-dot dot-exp"></span>Git / GitHub</div>
+      <div class="skill-item"><span class="skill-dot dot-exp"></span>Redis</div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Frontend · API</div>
+      <div class="skill-item"><span class="skill-dot dot-mid"></span>React</div>
+      <div class="skill-item"><span class="skill-dot dot-mid"></span>JSP / JSTL</div>
+      <div class="skill-item"><span class="skill-dot dot-mid"></span>Toss Payments</div>
+      <div class="skill-item"><span class="skill-dot dot-mid"></span>OAuth2 (Google·Kakao·Naver)</div>
+      <div class="skill-item"><span class="skill-dot dot-exp"></span>Naver Clova API</div>
+      <div class="skill-item"><span class="skill-dot dot-exp"></span>VirusTotal API</div>
+    </div>
+  </div>
+  <div class="reveal skill-legend" style="margin-top:1.5rem;">
+    <div class="legend-item"><span class="skill-dot dot-main" style="width:8px;height:8px;display:inline-block;border-radius:50%;"></span>주력 — 실무 수준</div>
+    <div class="legend-item"><span class="skill-dot dot-mid" style="width:8px;height:8px;display:inline-block;border-radius:50%;background:var(--accent2);"></span>활용 가능</div>
+    <div class="legend-item"><span class="skill-dot dot-exp" style="width:8px;height:8px;display:inline-block;border-radius:50%;background:var(--muted);"></span>경험 있음</div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="reveal">
+    <div class="section-label">Projects</div>
+    <h2 class="section-title">주요 프로젝트</h2>
+    <p class="section-sub">문제를 정의하고, 기술로 해결한 4개의 프로젝트입니다.</p>
+  </div>
+
+  <!-- VX -->
+  <div class="project-card reveal">
+    <div class="project-top">
+      <div>
+        <div class="project-num">// 01</div>
+        <div class="project-title">🛡️ VX — Virus EXIT</div>
+        <div class="project-subtitle">3단계 AI 앙상블 기반 악성코드 분석 플랫폼</div>
+      </div>
+      <div class="project-meta">
+        <div class="project-team">팀 프로젝트 · 5인</div>
+        <div class="project-stack">
+          <span class="tag highlight">Spring Boot</span>
+          <span class="tag highlight">Java 17</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">MongoDB</span>
+          <span class="tag">React</span>
+          <span class="tag">Docker</span>
+          <span class="tag">JWT</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-body">
+      <div class="proj-section">
+        <div class="proj-section-title">문제 정의</div>
+        <p>기존 단일 AI 모델 탐지 방식은 신종 악성코드에 취약하고 탐지 근거를 제공하지 못함. 보안 담당자가 판단 근거 없이 결과만 받는 블랙박스 문제 존재.</p>
+      </div>
+      <div class="proj-section">
+        <div class="proj-section-title">해결 방법</div>
+        <ul>
+          <li>EMBER 2,381개 특징 추출 → LightGBM 이진 분류 → XGBoost 패밀리 분류 → GPT-4o 한국어 리포트 생성 4단계 파이프라인</li>
+          <li>Docker Compose 마이크로서비스로 AI 서버 분리</li>
+          <li>비로그인 게스트도 검사 가능한 공개 API 설계</li>
+        </ul>
+      </div>
+      <div class="proj-section">
+        <div class="proj-section-title">내 역할</div>
+        <ul>
+          <li class="proj-role">Spring Boot 백엔드 전체 담당</li>
+          <li>JWT 인증 시스템 설계 (Access 1h / Refresh 14d)</li>
+          <li>FastAPI AI 서버 연동 HTTP 클라이언트 구현</li>
+          <li>MongoDB 분석 결과 저장 구조 설계</li>
+          <li>VirusTotal API v3 연동</li>
+        </ul>
+      </div>
+    </div>
+    <div class="project-footer">
+      <div class="project-stack">
+        <span class="tag">LightGBM</span>
+        <span class="tag">XGBoost</span>
+        <span class="tag">GPT-4o</span>
+        <span class="tag">VirusTotal API</span>
+      </div>
+      <a href="https://github.com/lense1/VX" class="project-link">GitHub</a>
+    </div>
+  </div>
+
+  <!-- Stock+er -->
+  <div class="project-card reveal">
+    <div class="project-top">
+      <div>
+        <div class="project-num">// 02</div>
+        <div class="project-title">🛒 Stock+er</div>
+        <div class="project-subtitle">AI 가격 자동 최적화 기반 식품 이커머스 플랫폼</div>
+      </div>
+      <div class="project-meta">
+        <div class="project-team">팀 프로젝트 · 7인</div>
+        <div class="project-stack">
+          <span class="tag highlight">FastAPI</span>
+          <span class="tag highlight">Python</span>
+          <span class="tag">React</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">XGBoost</span>
+          <span class="tag">Selenium</span>
+          <span class="tag">Toss</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-body">
+      <div class="proj-section">
+        <div class="proj-section-title">문제 정의</div>
+        <p>식품 이커머스에서 재고 상태(악성재고·부족)에 따른 최적 판매가 책정이 수동으로 이루어져 손실 발생. 경쟁사 최저가 파악도 어려운 상황.</p>
+      </div>
+      <div class="proj-section">
+        <div class="proj-section-title">해결 방법</div>
+        <ul>
+          <li>GAM/XGBoost AI 모델로 재고 상태별 최적 가격 자동 산출</li>
+          <li>Selenium으로 네이버 쇼핑 실시간 최저가 크롤링</li>
+          <li>Google·Kakao·Naver OAuth2 소셜 로그인 3종 지원</li>
+          <li>이메일 인증 기반 회원가입 · Cloudinary 이미지 관리</li>
+        </ul>
+      </div>
+      <div class="proj-section">
+        <div class="proj-section-title">내 역할</div>
+        <ul>
+          <li class="proj-role">FastAPI 백엔드 핵심 담당</li>
+          <li>Toss Payments 결제 승인·취소 API 연동</li>
+          <li>JWT 인증 (Access 60min / Refresh 14d) 설계</li>
+          <li>React 프론트 일부 (결제 플로우 페이지) 개발</li>
+          <li>SQLAlchemy ORM 기반 DB 모델 설계</li>
+        </ul>
+      </div>
+    </div>
+    <div class="project-footer">
+      <div class="project-stack">
+        <span class="tag">GAM</span>
+        <span class="tag">OAuth2</span>
+        <span class="tag">Cloudinary</span>
+        <span class="tag">Gmail SMTP</span>
+      </div>
+      <div style="display:flex; gap:1rem; align-items:center;">
+        <a href="https://www.youtube.com/watch?v=KhZGj2VS4UE" target="_blank" class="project-link" style="color:var(--accent2);">▶ 시연영상</a>
+        <a href="https://github.com/lense1/Stocker" class="project-link">GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Me_and_U -->
+  <div class="project-card reveal">
+    <div class="project-top">
+      <div>
+        <div class="project-num">// 03</div>
+        <div class="project-title">🌟 Me_and_U</div>
+        <div class="project-subtitle">버킷리스트를 함께 완성하는 소셜 커뮤니티 플랫폼</div>
+      </div>
+      <div class="project-meta">
+        <div class="project-team">팀 프로젝트</div>
+        <div class="project-stack">
+          <span class="tag highlight">Spring Boot</span>
+          <span class="tag highlight">Java 11</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">MyBatis</span>
+          <span class="tag">JSP</span>
+          <span class="tag">Naver API</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-body">
+      <div class="proj-section">
+        <div class="proj-section-title">문제 정의</div>
+        <p>버킷리스트를 혼자 관리하고 달성하기 어렵고, 같은 목표를 가진 사람들과 연결될 수 있는 커뮤니티 부재. 음성 기반 인터랙션 지원 부족.</p>
+      </div>
+      <div class="proj-section">
+        <div class="proj-section-title">해결 방법</div>
+        <ul>
+          <li>나의 버킷리스트 + 모두의 버킷리스트 공유 시스템</li>
+          <li>Naver Clova Chatbot AI 챗봇 연동</li>
+          <li>STT(음성→텍스트) + TTS(텍스트→음성) 지원</li>
+          <li>이메일 인증 기반 회원가입·아이디/비밀번호 찾기</li>
+        </ul>
+      </div>
+      <div class="proj-section">
+        <div class="proj-section-title">내 역할</div>
+        <ul>
+          <li class="proj-role">Spring Boot 백엔드 담당</li>
+          <li>Spring Security 기반 인증·인가 구현</li>
+          <li>MyBatis SQL 매퍼 설계</li>
+          <li>Naver API (Chatbot·STT·TTS) 연동</li>
+          <li>이메일 인증 시스템 구현</li>
+        </ul>
+      </div>
+    </div>
+    <div class="project-footer">
+      <div class="project-stack">
+        <span class="tag">Spring Security</span>
+        <span class="tag">Naver Clova</span>
+        <span class="tag">BCrypt</span>
+      </div>
+      <a href="https://github.com/lense1/Me_and_U" class="project-link">GitHub</a>
+    </div>
+  </div>
+
+  <!-- Traveler -->
+  <div class="project-card reveal">
+    <div class="project-top">
+      <div>
+        <div class="project-num">// 04</div>
+        <div class="project-title">🗺️ Traveler</div>
+        <div class="project-subtitle">한국 6개 권역 여행 정보 통합 가이드 플랫폼</div>
+      </div>
+      <div class="project-meta">
+        <div class="project-team">개인 / 팀 프로젝트</div>
+        <div class="project-stack">
+          <span class="tag highlight">Spring Boot</span>
+          <span class="tag highlight">Java 11</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">MyBatis</span>
+          <span class="tag">JSP</span>
+          <span class="tag">jQuery</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-body">
+      <div class="proj-section">
+        <div class="proj-section-title">문제 정의</div>
+        <p>국내 여행 시 지역별 축제·특산물 정보가 파편화되어 한눈에 찾기 어렵고, 여행자 간 소통 공간이 부재한 상황.</p>
+      </div>
+      <div class="proj-section">
+        <div class="proj-section-title">해결 방법</div>
+        <ul>
+          <li>서울·경기·강원·충청·경상·전라 6개 권역 정보 통합</li>
+          <li>jQuery Ajax 실시간 검색 (축제명·지역명)</li>
+          <li>이미지 슬라이드쇼 기반 UI 구성</li>
+          <li>커뮤니티 게시판 CRUD + 조회수 관리</li>
+        </ul>
+      </div>
+      <div class="proj-section">
+        <div class="proj-section-title">내 역할</div>
+        <ul>
+          <li class="proj-role">Spring Boot 백엔드 전체 담당</li>
+          <li>Spring Security + BCrypt 인증 구현</li>
+          <li>MyBatis 기반 DB 매핑 설계</li>
+          <li>Ajax @ResponseBody JSON API 구현</li>
+        </ul>
+      </div>
+    </div>
+    <div class="project-footer">
+      <div class="project-stack">
+        <span class="tag">Spring Security</span>
+        <span class="tag">BCrypt</span>
+        <span class="tag">Ajax</span>
+        <span class="tag">Daum 주소 API</span>
+      </div>
+      <a href="https://github.com/lense1/Traveler" class="project-link">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- GROWTH -->
+<section id="trouble" style="background:var(--bg2);">
+  <div class="reveal">
+    <div class="section-label">Growth</div>
+    <h2 class="section-title">프로젝트를 통해 배운 것</h2>
+    <p class="section-sub">4개의 프로젝트를 거치며 쌓인 기술적 경험과 협업 인사이트입니다.</p>
+  </div>
+  <div class="skills-wrap" style="grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+
+    <div class="skill-group reveal" style="padding: 2rem;">
+      <div class="skill-group-title">Java · Python 이중 백엔드</div>
+      <p style="font-size:0.875rem; color:#9999aa; line-height:1.9;">
+        VX에서 <strong style="color:var(--text);">Spring Boot</strong>로 인증·API 설계를 담당하고,
+        Stock+er에서 <strong style="color:var(--text);">FastAPI</strong>로 결제·비즈니스 로직을 구현하며
+        두 생태계를 모두 실전에서 경험했습니다.
+        Java의 타입 안정성과 Python의 생산성을 상황에 맞게 선택할 수 있는
+        시각을 갖게 됐습니다.
+      </p>
+    </div>
+
+    <div class="skill-group reveal" style="padding: 2rem;">
+      <div class="skill-group-title">AI 서버 연동 설계</div>
+      <p style="font-size:0.875rem; color:#9999aa; line-height:1.9;">
+        VX에서 Spring Boot ↔ FastAPI AI 서버 간 HTTP 통신 구조를 설계하며
+        <strong style="color:var(--text);">마이크로서비스 아키텍처</strong>를 실제로 경험했습니다.
+        AI 모델의 결과값을 비즈니스 로직과 연결하는 방식,
+        서비스 레이어 분리의 중요성을 배웠습니다.
+      </p>
+    </div>
+
+    <div class="skill-group reveal" style="padding: 2rem;">
+      <div class="skill-group-title">결제 시스템 구현</div>
+      <p style="font-size:0.875rem; color:#9999aa; line-height:1.9;">
+        Stock+er에서 <strong style="color:var(--text);">Toss Payments</strong> 결제 승인·취소 API를
+        직접 연동하며 금전이 오가는 시스템의 신뢰성 설계를 고민했습니다.
+        결제 상태를 READY → APPROVED → CANCELED 단계로 명확히 관리하는
+        중요성을 체감했습니다.
+      </p>
+    </div>
+
+    <div class="skill-group reveal" style="padding: 2rem;">
+      <div class="skill-group-title">5~7인 팀 협업</div>
+      <p style="font-size:0.875rem; color:#9999aa; line-height:1.9;">
+        VX(5인)와 Stock+er(7인) 모두에서 백엔드 핵심 역할을 담당하며
+        <strong style="color:var(--text);">팀원 간 API 명세 공유</strong>와
+        역할 분담의 중요성을 배웠습니다.
+        프론트와 백엔드 경계를 명확히 정의하는 것이
+        개발 속도에 얼마나 큰 영향을 미치는지 직접 경험했습니다.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+
+<footer>
+  <div class="footer-copy">© 2025 박경안. All rights reserved.</div>
+  <div style="font-family:var(--mono);font-size:0.7rem;color:var(--muted);">Java · Python · Backend</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
